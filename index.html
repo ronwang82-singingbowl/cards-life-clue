@@ -1,0 +1,2757 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#F3EFE6">
+
+<title>今天的生活線索</title>
+
+<style>
+:root{
+  --bg:#f3efe6;
+  --paper:#fffdf8;
+  --text:#302f2b;
+  --muted:#77736a;
+  --line:#d9d2c4;
+  --accent:#75846f;
+  --accent-soft:#e4e8df;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+}
+
+body{
+  min-height:100dvh;
+  background:
+    radial-gradient(circle at top left,#fbf8f1 0%,transparent 45%),
+    var(--bg);
+  color:var(--text);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "PingFang TC",
+    "Noto Sans TC",
+    "Microsoft JhengHei",
+    sans-serif;
+}
+
+button{
+  font:inherit;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.app{
+  width:min(100%,520px);
+  min-height:100dvh;
+  margin:0 auto;
+
+  padding:
+    max(24px,env(safe-area-inset-top))
+    22px
+    max(32px,env(safe-area-inset-bottom));
+
+  display:flex;
+  flex-direction:column;
+}
+
+.brand{
+  margin-bottom:24px;
+  color:var(--muted);
+  font-size:12px;
+  letter-spacing:.18em;
+}
+
+.screen{
+  flex:1;
+  display:none;
+  flex-direction:column;
+}
+
+.screen.active{
+  display:flex;
+}
+
+/* =========================
+   首頁
+========================= */
+
+.home{
+  justify-content:center;
+  text-align:center;
+  padding-bottom:8vh;
+}
+
+.deck{
+  position:relative;
+  width:175px;
+  height:238px;
+  margin:0 auto 40px;
+}
+
+.deck-card{
+  position:absolute;
+  inset:0;
+  background:var(--paper);
+
+  border:
+    1px solid rgba(65,63,57,.12);
+
+  border-radius:21px;
+
+  box-shadow:
+    0 18px 45px
+    rgba(57,52,44,.09);
+}
+
+.deck-card:nth-child(1){
+  transform:
+    rotate(-5deg)
+    translate(-8px,5px);
+}
+
+.deck-card:nth-child(2){
+  transform:
+    rotate(4deg)
+    translate(8px,2px);
+}
+
+.deck-card:nth-child(3){
+  display:grid;
+  place-items:center;
+}
+
+.deck-symbol{
+  width:56px;
+  height:56px;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--muted);
+
+  border:
+    1px solid var(--line);
+
+  border-radius:50%;
+
+  font-size:18px;
+}
+
+h1{
+  margin:0 0 20px;
+
+  font-family:
+    Georgia,
+    "Noto Serif TC",
+    serif;
+
+  font-size:
+    clamp(32px,8vw,43px);
+
+  font-weight:500;
+  line-height:1.3;
+}
+
+.intro{
+  max-width:330px;
+
+  margin:
+    0 auto 34px;
+
+  color:var(--muted);
+
+  font-size:16px;
+  line-height:1.9;
+}
+
+.primary{
+  min-width:190px;
+
+  padding:
+    16px 30px;
+
+  background:var(--text);
+  color:#fff;
+
+  border:0;
+  border-radius:999px;
+
+  box-shadow:
+    0 8px 20px
+    rgba(48,47,43,.14);
+
+  cursor:pointer;
+  font-weight:600;
+}
+
+.primary:active{
+  transform:translateY(1px);
+}
+
+/* =========================
+   卡牌
+========================= */
+
+.card-screen{
+  justify-content:center;
+}
+
+.today-label{
+  margin-bottom:16px;
+
+  color:var(--muted);
+
+  font-size:12px;
+  letter-spacing:.16em;
+
+  text-align:center;
+}
+
+.card{
+  position:relative;
+
+  min-height:505px;
+
+  padding:
+    30px 26px 26px;
+
+  background:var(--paper);
+
+  border:
+    1px solid rgba(53,50,45,.11);
+
+  border-radius:25px;
+
+  box-shadow:
+    0 22px 60px
+    rgba(55,50,43,.10);
+
+  overflow:hidden;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.card.animate{
+  animation:
+    reveal .45s ease both;
+}
+
+@keyframes reveal{
+  from{
+    opacity:0;
+    transform:
+      translateY(16px)
+      scale(.985);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.card-shape{
+  position:absolute;
+
+  top:-110px;
+  right:-80px;
+
+  width:210px;
+  height:210px;
+
+  background:
+    var(--accent-soft);
+
+  border-radius:50%;
+
+  opacity:.85;
+}
+
+.category{
+  position:relative;
+  z-index:1;
+
+  display:inline-flex;
+  align-items:center;
+
+  gap:8px;
+
+  color:var(--accent);
+
+  font-size:12px;
+  letter-spacing:.16em;
+}
+
+.category-dot{
+  width:7px;
+  height:7px;
+
+  background:var(--accent);
+
+  border-radius:50%;
+}
+
+.card-title{
+  position:relative;
+  z-index:1;
+
+  max-width:88%;
+
+  margin:
+    48px 0 28px;
+
+  font-family:
+    Georgia,
+    "Noto Serif TC",
+    serif;
+
+  font-size:34px;
+  font-weight:500;
+  line-height:1.35;
+}
+
+.blessing{
+  max-width:94%;
+
+  margin:0;
+
+  font-family:
+    Georgia,
+    "Noto Serif TC",
+    serif;
+
+  font-size:18px;
+  line-height:1.9;
+}
+
+.divider{
+  width:34px;
+  height:1px;
+
+  margin:
+    30px 0 22px;
+
+  background:var(--line);
+}
+
+.clue-label{
+  margin-bottom:11px;
+
+  color:var(--accent);
+
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.16em;
+}
+
+.clue{
+  margin:0;
+
+  color:#46443f;
+
+  font-size:16px;
+  line-height:1.85;
+}
+
+.card-footer{
+  margin-top:34px;
+
+  color:#999388;
+
+  font-size:11px;
+  letter-spacing:.06em;
+}
+
+/* =========================
+   按鈕
+========================= */
+
+.save-button{
+  width:100%;
+  min-height:54px;
+
+  margin-top:18px;
+
+  padding:
+    13px 18px;
+
+  background:var(--text);
+  color:#fff;
+
+  border:
+    1px solid var(--text);
+
+  border-radius:15px;
+
+  cursor:pointer;
+  font-weight:600;
+}
+
+.secondary-actions{
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+  margin-top:10px;
+}
+
+.secondary,
+.ghost{
+  min-height:49px;
+
+  padding:
+    11px 10px;
+
+  border-radius:14px;
+
+  cursor:pointer;
+}
+
+.secondary{
+  background:
+    rgba(255,255,255,.45);
+
+  color:var(--text);
+
+  border:
+    1px solid var(--line);
+}
+
+.ghost{
+  background:transparent;
+
+  color:var(--text);
+
+  border:
+    1px solid var(--line);
+}
+
+.change{
+  display:block;
+
+  margin:0 auto;
+
+  padding:
+    19px 12px 6px;
+
+  background:transparent;
+
+  color:var(--muted);
+
+  border:0;
+
+  cursor:pointer;
+
+  font-size:13px;
+
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+
+.tiny-note{
+  margin:
+    17px 5px 0;
+
+  color:#928d83;
+
+  font-size:12px;
+  line-height:1.7;
+
+  text-align:center;
+}
+
+/* =========================
+   Toast
+========================= */
+
+.toast{
+  position:fixed;
+
+  left:50%;
+
+  bottom:
+    max(
+      25px,
+      env(safe-area-inset-bottom)
+    );
+
+  z-index:999;
+
+  padding:
+    11px 18px;
+
+  background:
+    rgba(45,44,40,.94);
+
+  color:#fff;
+
+  border-radius:999px;
+
+  font-size:13px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+}
+
+@media(max-width:390px){
+
+  .card{
+    min-height:480px;
+  }
+
+  .card-title{
+    font-size:30px;
+  }
+
+  .secondary-actions{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+
+<body>
+
+<main class="app">
+
+  <div class="brand">
+    今天的生活線索
+  </div>
+
+
+  <!-- 首頁 -->
+
+  <section
+    id="homeScreen"
+    class="screen home active"
+  >
+
+    <div class="deck">
+
+      <div class="deck-card"></div>
+      <div class="deck-card"></div>
+
+      <div class="deck-card">
+        <span class="deck-symbol">
+          ○
+        </span>
+      </div>
+
+    </div>
+
+
+    <h1>
+      今天，<br>
+      你會遇見什麼？
+    </h1>
+
+
+    <p class="intro">
+
+      出門前，抽一張。<br>
+
+      帶著一條生活線索去過今天。
+
+      <br><br>
+
+      不必完成什麼，<br>
+
+      只看看今天會遇見什麼。
+
+    </p>
+
+
+    <button
+      id="drawBtn"
+      class="primary"
+      type="button"
+    >
+      抽一張
+    </button>
+
+  </section>
+
+
+  <!-- 今日卡 -->
+
+  <section
+    id="cardScreen"
+    class="screen card-screen"
+  >
+
+    <div
+      id="todayLabel"
+      class="today-label"
+    >
+      今天的生活線索
+    </div>
+
+
+    <article
+      id="cardElement"
+      class="card"
+    >
+
+      <div class="card-shape"></div>
+
+
+      <div>
+
+        <div class="category">
+
+          <span
+            class="category-dot"
+          ></span>
+
+          <span
+            id="category"
+          ></span>
+
+        </div>
+
+
+        <div
+          id="cardTitle"
+          class="card-title"
+        ></div>
+
+
+        <p
+          id="blessing"
+          class="blessing"
+        ></p>
+
+
+        <div class="divider"></div>
+
+
+        <div class="clue-label">
+          今天的線索
+        </div>
+
+
+        <p
+          id="clue"
+          class="clue"
+        ></p>
+
+      </div>
+
+
+      <div class="card-footer">
+        卡片會重複，生活不會。
+      </div>
+
+    </article>
+
+
+    <button
+      id="saveImageBtn"
+      class="save-button"
+      type="button"
+    >
+      儲存今天的牌
+    </button>
+
+
+    <div class="secondary-actions">
+
+      <button
+        id="shareImageBtn"
+        class="secondary"
+        type="button"
+      >
+        分享圖片
+      </button>
+
+
+      <button
+        id="copyBtn"
+        class="ghost"
+        type="button"
+      >
+        複製文字
+      </button>
+
+    </div>
+
+
+    <button
+      id="changeBtn"
+      class="change"
+      type="button"
+    >
+      今天想換一張
+    </button>
+
+
+    <p class="tiny-note">
+
+      儲存後可以收藏在手機裡，<br>
+
+      也可以選這張圖片分享限時動態。
+
+    </p>
+
+  </section>
+
+</main>
+
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
+
+<script>
+
+/* =====================================================
+   41 張 V3 卡牌
+===================================================== */
+
+const cards = [
+
+/* =====================
+   看見
+===================== */
+
+{
+  id:1,
+  category:"看見",
+  title:"留意光",
+  blessing:
+    "願你今天，遇見一束讓你想多停留一下的光。",
+  clue:
+    "留意哪一道光，讓原本平常的東西突然變得不一樣。"
+},
+
+{
+  id:2,
+  category:"看見",
+  title:"看見顏色",
+  blessing:
+    "願今天有一個顏色，在日常裡先被你看見。",
+  clue:
+    "看看今天哪個顏色先抓住了你的目光。"
+},
+
+{
+  id:3,
+  category:"看見",
+  title:"抬頭看看",
+  blessing:
+    "願你今天，也記得世界不只在眼前。",
+  clue:
+    "走路時，偶爾抬頭看看天空、樹梢或屋頂。"
+},
+
+{
+  id:4,
+  category:"看見",
+  title:"熟悉裡的陌生",
+  blessing:
+    "願你今天，在走過很多次的地方，還能遇見一點第一次。",
+  clue:
+    "經過熟悉的地方時，留意一個以前沒看見的細節。"
+},
+
+{
+  id:5,
+  category:"看見",
+  title:"多看一眼",
+  blessing:
+    "願你今天，遇見一個讓目光自己停下來的東西。",
+  clue:
+    "留意有什麼讓你忍不住多看一眼。不用判斷它美不美。"
+},
+
+{
+  id:6,
+  category:"看見",
+  title:"看見季節",
+  blessing:
+    "願你今天，看見時間不只在日曆上前進。",
+  clue:
+    "留意一個屬於這個季節的細節。"
+},
+
+{
+  id:7,
+  category:"看見",
+  title:"多看五秒",
+  blessing:
+    "願你今天，有一個畫面值得你不急著離開。",
+  clue:
+    "遇到一個原本會直接走過的畫面，多看五秒，看看第二眼出現了什麼。"
+},
+
+
+/* =====================
+   聽見
+===================== */
+
+{
+  id:8,
+  category:"聽見",
+  title:"聽見城市",
+  blessing:
+    "願你今天，聽見生活一直有自己的聲音。",
+  clue:
+    "走在外面時，聽聽離你最近和最遠的聲音。"
+},
+
+{
+  id:9,
+  category:"聽見",
+  title:"聽見安靜",
+  blessing:
+    "願你今天，也遇見一小段不需要被填滿的安靜。",
+  clue:
+    "當周圍忽然安靜下來時，先停留幾秒。"
+},
+
+{
+  id:10,
+  category:"聽見",
+  title:"一句話",
+  blessing:
+    "願你今天，剛好聽見一句值得帶走的話。",
+  clue:
+    "留意今天哪一句話，讓你在心裡多停了一秒。"
+},
+
+{
+  id:11,
+  category:"聽見",
+  title:"聽見停頓",
+  blessing:
+    "願你今天，不只聽見說出口的話，也聽見話與話之間的空隙。",
+  clue:
+    "和人說話時，留意一次短短的停頓。"
+},
+
+{
+  id:12,
+  category:"聽見",
+  title:"聽見自己",
+  blessing:
+    "願你今天，也有一次把自己的聲音真正聽進耳朵裡。",
+  clue:
+    "有一次說話時，也聽聽自己的聲音。不用判斷，只要聽見。"
+},
+
+{
+  id:13,
+  category:"聽見",
+  title:"熟悉的聲音",
+  blessing:
+    "願你今天，聽見一個早已陪伴你很久的聲音。",
+  clue:
+    "留意一個你天天聽見，平常卻很少真正注意的聲音。"
+},
+
+{
+  id:14,
+  category:"聽見",
+  title:"今天的配樂",
+  blessing:
+    "願今天有一首歌，剛好和你正在經過的生活待在一起。",
+  clue:
+    "當某首歌特別有感覺時，看看那一刻你在哪裡、正在做什麼。"
+},
+
+
+/* =====================
+   感覺
+===================== */
+
+{
+  id:15,
+  category:"感覺",
+  title:"聞到今天",
+  blessing:
+    "願今天有一個味道，讓你忽然知道自己正站在這裡。",
+  clue:
+    "留意今天第一個讓你特別有感覺的氣味。"
+},
+
+{
+  id:16,
+  category:"感覺",
+  title:"察覺舒服",
+  blessing:
+    "願你今天，也認得那些讓身體偷偷鬆開的小時刻。",
+  clue:
+    "第一次感到舒服時停一下，看看是什麼讓身體放鬆了。"
+},
+
+{
+  id:17,
+  category:"感覺",
+  title:"手上的重量",
+  blessing:
+    "願你今天，也感覺到那些每天被你拿起又放下的東西。",
+  clue:
+    "拿起一樣常用的東西時，感受一下它在手上的重量。"
+},
+
+{
+  id:18,
+  category:"感覺",
+  title:"好好吃一口",
+  blessing:
+    "願今天有一口食物，不只是填飽你，而是真的被你嚐到。",
+  clue:
+    "選一口食物，先不看手機，留意味道、溫度和口感。"
+},
+
+{
+  id:19,
+  category:"感覺",
+  title:"感受溫度",
+  blessing:
+    "願你今天，感覺到空氣是怎麼碰到你的。",
+  clue:
+    "留意一次溫度碰到皮膚的瞬間。"
+},
+
+{
+  id:20,
+  category:"感覺",
+  title:"腳下的路",
+  blessing:
+    "願你今天，不只走向目的地，也感覺自己一步一步經過它。",
+  clue:
+    "走路時，留意幾步腳底碰到地面的感覺。"
+},
+
+{
+  id:21,
+  category:"感覺",
+  title:"碰到什麼",
+  blessing:
+    "願你今天，除了看見世界，也真的碰到它。",
+  clue:
+    "留意一次手碰到東西時的觸感：粗、滑、軟、硬，或冰涼。"
+},
+
+
+/* =====================
+   遇見
+===================== */
+
+{
+  id:22,
+  category:"遇見",
+  title:"一個表情",
+  blessing:
+    "願你今天，不只遇見一個人，也看見一個瞬間的他。",
+  clue:
+    "和某個人說話時，留意一次他臉上短暫出現的表情。不用解讀。"
+},
+
+{
+  id:23,
+  category:"遇見",
+  title:"對上眼",
+  blessing:
+    "願你今天，有一個短短的瞬間，知道另一個人也看見了你。",
+  clue:
+    "留意一次和別人對上眼的瞬間。不必做什麼，只感受那一秒。"
+},
+
+{
+  id:24,
+  category:"遇見",
+  title:"最後一句",
+  blessing:
+    "願你今天，有一次沒有急著走到自己的下一句。",
+  clue:
+    "留意一次對方說完話時，最後留下的是哪一句。"
+},
+
+{
+  id:25,
+  category:"遇見",
+  title:"一個來回",
+  blessing:
+    "願你今天，看見那些小到幾乎不會被記住的互相。",
+  clue:
+    "留意一次你和另一個人完成的小小來回。遞出、接住、讓路、回應，都算。"
+},
+
+{
+  id:26,
+  category:"遇見",
+  title:"擦身而過",
+  blessing:
+    "願你今天記得，身旁匆匆經過的人，也正走在自己的生活裡。",
+  clue:
+    "留意一個和你短暫共享同一個空間的人。不必猜測他的故事。"
+},
+
+{
+  id:27,
+  category:"遇見",
+  title:"有人替你做了一點",
+  blessing:
+    "願你今天，看見一件別人順手替你做的小事。",
+  clue:
+    "留意那些讓事情變得容易一點的小幫忙。"
+},
+
+{
+  id:28,
+  category:"遇見",
+  title:"你也在別人的今天裡",
+  blessing:
+    "願你今天，也看見自己的存在曾輕輕經過別人的生活。",
+  clue:
+    "留意一次很小的互動，看看你的存在怎麼出現在另一個人的今天裡。"
+},
+
+
+/* =====================
+   換一點
+===================== */
+
+{
+  id:29,
+  category:"換一點",
+  title:"換一條路",
+  blessing:
+    "願你今天，留一小段路給沒有走過的風景。",
+  clue:
+    "如果剛好不趕時間，選一次和平常不同的路。"
+},
+
+{
+  id:30,
+  category:"換一點",
+  title:"今天少一件",
+  blessing:
+    "願你的今天，不必因為少做一件事就變得不完整。",
+  clue:
+    "當一件不急的事出現時，留意它是不是可以不放進今天。"
+},
+
+{
+  id:31,
+  category:"換一點",
+  title:"換個位置",
+  blessing:
+    "願你今天，換一個位置，也換到一點不同的風景。",
+  clue:
+    "找一次機會，坐在和平常不同的位置。"
+},
+
+{
+  id:32,
+  category:"換一點",
+  title:"選你喜歡的",
+  blessing:
+    "願你今天，至少有一個小小選擇，只因為你比較喜歡。",
+  clue:
+    "當兩個選項都可以時，留意哪一個其實更吸引你。"
+},
+
+{
+  id:33,
+  category:"換一點",
+  title:"做一件沒必要的事",
+  blessing:
+    "願你今天，不是每一件事都必須有用。",
+  clue:
+    "如果有件小事只是讓你想做，就留一點時間給它。"
+},
+
+{
+  id:34,
+  category:"換一點",
+  title:"留一點空白",
+  blessing:
+    "願你的今天，有一小段時間不急著被安排成什麼。",
+  clue:
+    "當意外多出幾分鐘時，先別急著把它填滿，看看它最後去了哪裡。"
+},
+
+
+/* =====================
+   留下來
+===================== */
+
+{
+  id:35,
+  category:"留下來",
+  title:"剛剛好",
+  blessing:
+    "願你今天，遇見一個什麼都不用再加的時刻。",
+  clue:
+    "留意有沒有某一刻，你心裡自然冒出：「這樣剛剛好。」"
+},
+
+{
+  id:36,
+  category:"留下來",
+  title:"捨不得結束",
+  blessing:
+    "願今天有一個時刻，讓你希望它慢一點結束。",
+  clue:
+    "留意哪個時刻結束時，你心裡還想多待一下。"
+},
+
+{
+  id:37,
+  category:"留下來",
+  title:"好了",
+  blessing:
+    "願你今天，也聽見心裡那一聲很小的「好了」。",
+  clue:
+    "完成一件普通的小事時，留意一下那個結束的瞬間。"
+},
+
+{
+  id:38,
+  category:"留下來",
+  title:"今天限定",
+  blessing:
+    "願你今天，看見一件明天不會完全一樣的事情。",
+  clue:
+    "留意一個「只有今天是這樣」的東西。"
+},
+
+{
+  id:39,
+  category:"留下來",
+  title:"不拍也想記得",
+  blessing:
+    "願你今天，遇見一幕讓你想把它留下來。",
+  clue:
+    "如果有個畫面讓你想拍照，先看它幾秒。想想你最想記住哪一部分。"
+},
+
+{
+  id:40,
+  category:"留下來",
+  title:"又想起來了",
+  blessing:
+    "願今天有一個很小的瞬間，在離開之後還願意回來找你。",
+  clue:
+    "留意有沒有一件已經過去的小事，後來又突然被你想起。"
+},
+
+{
+  id:41,
+  category:"留下來",
+  title:"今天有活到",
+  blessing:
+    "願今天結束以前，有一個瞬間，讓你清楚感覺自己真的在這一天裡。",
+  clue:
+    "到了晚上，想想今天哪一個瞬間最有感覺。它不必特別，也不一定開心，只要那一刻，你記得自己真的在這裡。"
+}
+
+];
+
+
+/* =====================================================
+   六類配色
+===================================================== */
+
+const themes={
+
+  "看見":{
+    accent:"#927555",
+    soft:"#EEE4D6",
+    background:"#EDE4D7",
+    backgroundDark:"#CDBDAA",
+    card:"#FFFDF8",
+    clue:"#F5EFE7"
+  },
+
+  "聽見":{
+    accent:"#647984",
+    soft:"#E2EAED",
+    background:"#DFE7EA",
+    backgroundDark:"#B9C8CE",
+    card:"#FFFDF9",
+    clue:"#EEF3F4"
+  },
+
+  "感覺":{
+    accent:"#6F8068",
+    soft:"#E2E9DE",
+    background:"#E0E8DD",
+    backgroundDark:"#BDCAB8",
+    card:"#FFFDF8",
+    clue:"#EFF4EC"
+  },
+
+  "遇見":{
+    accent:"#916D69",
+    soft:"#EEE1DF",
+    background:"#EDE1DE",
+    backgroundDark:"#D2BDB9",
+    card:"#FFFDF9",
+    clue:"#F6EFED"
+  },
+
+  "換一點":{
+    accent:"#967254",
+    soft:"#EEE2D7",
+    background:"#ECE1D5",
+    backgroundDark:"#CEB9A4",
+    card:"#FFFDF8",
+    clue:"#F5EEE7"
+  },
+
+  "留下來":{
+    accent:"#756C87",
+    soft:"#E7E3ED",
+    background:"#E8E4ED",
+    backgroundDark:"#C8C0D2",
+    card:"#FFFDF9",
+    clue:"#F2EFF5"
+  }
+
+};
+
+
+/* =====================================================
+   DOM
+===================================================== */
+
+const homeScreen=
+  document.getElementById("homeScreen");
+
+const cardScreen=
+  document.getElementById("cardScreen");
+
+const drawBtn=
+  document.getElementById("drawBtn");
+
+const saveImageBtn=
+  document.getElementById("saveImageBtn");
+
+const shareImageBtn=
+  document.getElementById("shareImageBtn");
+
+const copyBtn=
+  document.getElementById("copyBtn");
+
+const changeBtn=
+  document.getElementById("changeBtn");
+
+const categoryEl=
+  document.getElementById("category");
+
+const titleEl=
+  document.getElementById("cardTitle");
+
+const blessingEl=
+  document.getElementById("blessing");
+
+const clueEl=
+  document.getElementById("clue");
+
+const todayLabel=
+  document.getElementById("todayLabel");
+
+const cardElement=
+  document.getElementById("cardElement");
+
+const toastElement=
+  document.getElementById("toast");
+
+let currentCard=null;
+
+
+/* =====================================================
+   LocalStorage V6
+===================================================== */
+
+const STORAGE={
+
+  DATE:
+    "lifeClueDateV6",
+
+  TODAY:
+    "lifeClueTodayV6",
+
+  HISTORY:
+    "lifeClueHistoryV6"
+
+};
+
+
+/* =====================================================
+   日期
+===================================================== */
+
+function getTodayKey(){
+
+  const date=
+    new Date();
+
+  const year=
+    date.getFullYear();
+
+  const month=
+    String(
+      date.getMonth()+1
+    ).padStart(2,"0");
+
+  const day=
+    String(
+      date.getDate()
+    ).padStart(2,"0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+/* =====================================================
+   歷史紀錄
+===================================================== */
+
+function getHistory(){
+
+  try{
+
+    const raw=
+      localStorage.getItem(
+        STORAGE.HISTORY
+      );
+
+    if(!raw){
+      return [];
+    }
+
+    const data=
+      JSON.parse(raw);
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  }catch{
+
+    return [];
+
+  }
+}
+
+
+function saveHistory(id){
+
+  let history=
+    getHistory();
+
+  history=
+    history.filter(
+      item=>
+        Number(item)!==
+        Number(id)
+    );
+
+  history.push(id);
+
+  /*
+    41 張牌時，
+    保留最近 6 張避免短期重複。
+  */
+
+  history=
+    history.slice(-6);
+
+  try{
+
+    localStorage.setItem(
+      STORAGE.HISTORY,
+      JSON.stringify(history)
+    );
+
+  }catch{}
+}
+
+
+/* =====================================================
+   今天的牌
+===================================================== */
+
+function saveTodayCard(card){
+
+  try{
+
+    localStorage.setItem(
+      STORAGE.DATE,
+      getTodayKey()
+    );
+
+    localStorage.setItem(
+      STORAGE.TODAY,
+      String(card.id)
+    );
+
+  }catch{}
+}
+
+
+function getTodayCard(){
+
+  try{
+
+    const date=
+      localStorage.getItem(
+        STORAGE.DATE
+      );
+
+    const id=
+      Number(
+        localStorage.getItem(
+          STORAGE.TODAY
+        )
+      );
+
+    if(
+      date!==
+      getTodayKey()
+    ){
+      return null;
+    }
+
+    if(!id){
+      return null;
+    }
+
+    return(
+      cards.find(
+        card=>
+          card.id===id
+      )||null
+    );
+
+  }catch{
+
+    return null;
+
+  }
+}
+
+
+/* =====================================================
+   抽牌
+===================================================== */
+
+function randomFrom(array){
+
+  const index=
+    Math.floor(
+      Math.random()*
+      array.length
+    );
+
+  return array[index];
+}
+
+
+function pickNewCard(){
+
+  const history=
+    getHistory();
+
+  let pool=
+    cards.filter(
+      card=>
+        !history.includes(
+          card.id
+        )
+    );
+
+  if(
+    pool.length===0
+  ){
+    pool=[...cards];
+  }
+
+  return randomFrom(pool);
+}
+
+
+function pickDifferentCard(){
+
+  if(!currentCard){
+    return pickNewCard();
+  }
+
+  const history=
+    getHistory();
+
+  let pool=
+    cards.filter(
+      card=>
+        card.id!==
+        currentCard.id
+        &&
+        !history.includes(
+          card.id
+        )
+    );
+
+  if(
+    pool.length===0
+  ){
+
+    pool=
+      cards.filter(
+        card=>
+          card.id!==
+          currentCard.id
+      );
+
+  }
+
+  return randomFrom(pool);
+}
+
+
+/* =====================================================
+   顏色
+===================================================== */
+
+function applyTheme(category){
+
+  const theme=
+    themes[category]
+    ||
+    themes["感覺"];
+
+  document
+    .documentElement
+    .style
+    .setProperty(
+      "--accent",
+      theme.accent
+    );
+
+  document
+    .documentElement
+    .style
+    .setProperty(
+      "--accent-soft",
+      theme.soft
+    );
+}
+
+
+/* =====================================================
+   顯示牌
+===================================================== */
+
+function showCard(
+  card,
+  returning=false
+){
+
+  currentCard=
+    card;
+
+  applyTheme(
+    card.category
+  );
+
+  categoryEl.textContent=
+    card.category;
+
+  titleEl.textContent=
+    card.title;
+
+  blessingEl.textContent=
+    card.blessing;
+
+  clueEl.textContent=
+    card.clue;
+
+  todayLabel.textContent=
+    returning
+      ? "今天，你已經抽過這一張"
+      : "今天的生活線索";
+
+  homeScreen
+    .classList
+    .remove("active");
+
+  cardScreen
+    .classList
+    .add("active");
+
+  cardElement
+    .classList
+    .remove("animate");
+
+  void cardElement.offsetWidth;
+
+  cardElement
+    .classList
+    .add("animate");
+}
+
+
+/* =====================================================
+   抽今天的牌
+===================================================== */
+
+function drawTodayCard(){
+
+  const saved=
+    getTodayCard();
+
+  if(saved){
+
+    showCard(
+      saved,
+      true
+    );
+
+    return;
+  }
+
+  const card=
+    pickNewCard();
+
+  saveTodayCard(
+    card
+  );
+
+  saveHistory(
+    card.id
+  );
+
+  showCard(
+    card,
+    false
+  );
+}
+
+
+/* =====================================================
+   換牌
+===================================================== */
+
+function changeCard(){
+
+  const next=
+    pickDifferentCard();
+
+  if(!next){
+
+    toast(
+      "目前沒有其他可以抽的牌"
+    );
+
+    return;
+  }
+
+  saveTodayCard(
+    next
+  );
+
+  saveHistory(
+    next.id
+  );
+
+  showCard(
+    next,
+    false
+  );
+
+  toast(
+    "已換一條新的生活線索"
+  );
+}
+
+
+/* =====================================================
+   Toast
+===================================================== */
+
+function toast(message){
+
+  toastElement.textContent=
+    message;
+
+  toastElement
+    .classList
+    .add("show");
+
+  setTimeout(
+    ()=>{
+
+      toastElement
+        .classList
+        .remove("show");
+
+    },
+    2200
+  );
+}
+
+
+/* =====================================================
+   分享文字
+===================================================== */
+
+function getShareText(){
+
+  if(!currentCard){
+    return "";
+  }
+
+  return(
+`今天的生活線索｜${currentCard.title}
+
+${currentCard.blessing}
+
+今天的線索
+${currentCard.clue}
+
+#今天的生活線索`
+  );
+}
+
+
+/* =====================================================
+   複製文字
+===================================================== */
+
+async function copyText(){
+
+  const text=
+    getShareText();
+
+  if(!text){
+    return;
+  }
+
+  try{
+
+    await navigator
+      .clipboard
+      .writeText(text);
+
+    toast(
+      "文字已複製"
+    );
+
+    return;
+
+  }catch{}
+
+
+  try{
+
+    const textarea=
+      document.createElement(
+        "textarea"
+      );
+
+    textarea.value=
+      text;
+
+    textarea.style.position=
+      "fixed";
+
+    textarea.style.opacity=
+      "0";
+
+    document.body
+      .appendChild(
+        textarea
+      );
+
+    textarea.focus();
+    textarea.select();
+
+    document.execCommand(
+      "copy"
+    );
+
+    textarea.remove();
+
+    toast(
+      "文字已複製"
+    );
+
+  }catch{
+
+    window.prompt(
+      "請複製以下文字：",
+      text
+    );
+  }
+}
+
+
+/* =====================================================
+   Canvas 自動換行
+===================================================== */
+
+function drawWrappedText(
+  ctx,
+  text,
+  x,
+  y,
+  maxWidth,
+  lineHeight
+){
+
+  const chars=
+    [...text];
+
+  let line="";
+
+  let currentY=y;
+
+  for(
+    const char of chars
+  ){
+
+    const next=
+      line+char;
+
+    if(
+      ctx
+        .measureText(next)
+        .width
+      >
+      maxWidth
+      &&
+      line
+    ){
+
+      ctx.fillText(
+        line,
+        x,
+        currentY
+      );
+
+      line=char;
+
+      currentY+=
+        lineHeight;
+
+    }else{
+
+      line=next;
+
+    }
+  }
+
+  if(line){
+
+    ctx.fillText(
+      line,
+      x,
+      currentY
+    );
+  }
+
+  return currentY;
+}
+
+
+/* =====================================================
+   圓角
+===================================================== */
+
+function roundedRect(
+  ctx,
+  x,
+  y,
+  width,
+  height,
+  radius
+){
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    x+radius,
+    y
+  );
+
+  ctx.lineTo(
+    x+width-radius,
+    y
+  );
+
+  ctx.quadraticCurveTo(
+    x+width,
+    y,
+    x+width,
+    y+radius
+  );
+
+  ctx.lineTo(
+    x+width,
+    y+height-radius
+  );
+
+  ctx.quadraticCurveTo(
+    x+width,
+    y+height,
+    x+width-radius,
+    y+height
+  );
+
+  ctx.lineTo(
+    x+radius,
+    y+height
+  );
+
+  ctx.quadraticCurveTo(
+    x,
+    y+height,
+    x,
+    y+height-radius
+  );
+
+  ctx.lineTo(
+    x,
+    y+radius
+  );
+
+  ctx.quadraticCurveTo(
+    x,
+    y,
+    x+radius,
+    y
+  );
+
+  ctx.closePath();
+}
+
+
+function fillRoundedRect(
+  ctx,
+  x,
+  y,
+  width,
+  height,
+  radius,
+  fillColor
+){
+
+  ctx.save();
+
+  ctx.fillStyle=
+    fillColor;
+
+  roundedRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+}
+
+
+function drawShadowCard(
+  ctx,
+  x,
+  y,
+  width,
+  height,
+  radius,
+  fillColor
+){
+
+  ctx.save();
+
+  ctx.shadowColor=
+    "rgba(54,49,43,.18)";
+
+  ctx.shadowBlur=
+    45;
+
+  ctx.shadowOffsetX=
+    0;
+
+  ctx.shadowOffsetY=
+    20;
+
+  ctx.fillStyle=
+    fillColor;
+
+  roundedRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+}
+
+
+/* =====================================================
+   建立收藏 / 限動卡牌圖片
+===================================================== */
+
+async function createStoryBlob(){
+
+  if(!currentCard){
+    return null;
+  }
+
+  const theme=
+    themes[
+      currentCard.category
+    ]
+    ||
+    themes["感覺"];
+
+
+  const canvas=
+    document.createElement(
+      "canvas"
+    );
+
+  canvas.width=
+    1080;
+
+  canvas.height=
+    1920;
+
+
+  const ctx=
+    canvas.getContext(
+      "2d"
+    );
+
+  if(!ctx){
+    return null;
+  }
+
+
+  /* 背景 */
+
+  ctx.fillStyle=
+    theme.background;
+
+  ctx.fillRect(
+    0,
+    0,
+    1080,
+    1920
+  );
+
+
+  /* 右上光 */
+
+  ctx.save();
+
+  ctx.globalAlpha=
+    .30;
+
+  ctx.fillStyle=
+    "#FFFFFF";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    1010,
+    100,
+    355,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+
+
+  /* 左下圓 */
+
+  ctx.save();
+
+  ctx.globalAlpha=
+    .18;
+
+  ctx.fillStyle=
+    theme.backgroundDark;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    -70,
+    1780,
+    340,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+
+
+  /* 左上小點 */
+
+  ctx.save();
+
+  ctx.globalAlpha=
+    .20;
+
+  ctx.fillStyle=
+    theme.backgroundDark;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    112,
+    250,
+    48,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+
+
+  /* 右側橢圓 */
+
+  ctx.save();
+
+  ctx.globalAlpha=
+    .08;
+
+  ctx.fillStyle=
+    theme.accent;
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    980,
+    980,
+    190,
+    420,
+    .18,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+
+
+  /* =====================
+     卡牌主體
+  ===================== */
+
+  const cardX=120;
+  const cardY=170;
+  const cardW=840;
+  const cardH=1460;
+  const cardR=40;
+
+
+  drawShadowCard(
+    ctx,
+    cardX,
+    cardY,
+    cardW,
+    cardH,
+    cardR,
+    theme.card
+  );
+
+
+  /* 卡牌細框 */
+
+  ctx.save();
+
+  ctx.strokeStyle=
+    "rgba(92,84,76,.10)";
+
+  ctx.lineWidth=2;
+
+  roundedRect(
+    ctx,
+    cardX,
+    cardY,
+    cardW,
+    cardH,
+    cardR
+  );
+
+  ctx.stroke();
+
+  ctx.restore();
+
+
+  /* 卡牌右上裝飾 */
+
+  ctx.save();
+
+  ctx.globalAlpha=.55;
+
+  ctx.fillStyle=
+    theme.soft;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    cardX+cardW-40,
+    cardY+30,
+    170,
+    0,
+    Math.PI*2
+  );
+
+  ctx.fill();
+
+  ctx.restore();
+
+
+  /* 內部裝飾弧線 */
+
+  ctx.save();
+
+  ctx.globalAlpha=.32;
+
+  ctx.strokeStyle=
+    theme.accent;
+
+  ctx.lineWidth=2;
+
+  ctx.beginPath();
+
+  ctx.arc(
+    cardX+cardW-120,
+    cardY+140,
+    50,
+    0,
+    Math.PI*1.3
+  );
+
+  ctx.stroke();
+
+  ctx.restore();
+
+
+  /* =====================
+     文字
+  ===================== */
+
+  const innerX=
+    cardX+72;
+
+  const innerW=
+    cardW-144;
+
+
+  ctx.fillStyle=
+    theme.accent;
+
+  ctx.font=
+    '600 24px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+  ctx.fillText(
+    "TODAY'S CLUE",
+    innerX,
+    cardY+85
+  );
+
+
+  ctx.font=
+    '25px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+  ctx.fillText(
+    currentCard.category,
+    innerX,
+    cardY+135
+  );
+
+
+  /* 卡名 */
+
+  ctx.fillStyle=
+    "#2F2C28";
+
+  let titleSize=
+    currentCard.title.length>8
+      ? 58
+      : currentCard.title.length>6
+      ? 64
+      : 72;
+
+  ctx.font=
+    `600 ${titleSize}px "Microsoft JhengHei","PingFang TC",sans-serif`;
+
+
+  const titleEnd=
+    drawWrappedText(
+      ctx,
+      currentCard.title,
+      innerX,
+      cardY+300,
+      innerW,
+      titleSize+20
+    );
+
+
+  /* 祝福 */
+
+  ctx.fillStyle=
+    "#45413C";
+
+  ctx.font=
+    '36px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+
+  const blessingStart=
+    titleEnd+100;
+
+
+  const blessingEnd=
+    drawWrappedText(
+      ctx,
+      currentCard.blessing,
+      innerX,
+      blessingStart,
+      innerW,
+      62
+    );
+
+
+  /* 分隔線 */
+
+  const dividerY=
+    blessingEnd+65;
+
+
+  ctx.save();
+
+  ctx.strokeStyle=
+    "rgba(104,96,87,.28)";
+
+  ctx.lineWidth=2;
+
+  ctx.beginPath();
+
+  ctx.moveTo(
+    innerX,
+    dividerY
+  );
+
+  ctx.lineTo(
+    innerX+76,
+    dividerY
+  );
+
+  ctx.stroke();
+
+  ctx.restore();
+
+
+  /* =====================
+     線索框
+  ===================== */
+
+  const clueBoxY=
+    dividerY+65;
+
+  const clueBoxH=
+    310;
+
+
+  fillRoundedRect(
+    ctx,
+    innerX,
+    clueBoxY,
+    innerW,
+    clueBoxH,
+    28,
+    theme.clue
+  );
+
+
+  ctx.fillStyle=
+    theme.accent;
+
+  ctx.font=
+    '600 27px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+  ctx.fillText(
+    "今天的線索",
+    innerX+34,
+    clueBoxY+64
+  );
+
+
+  ctx.fillStyle=
+    "#3F3B37";
+
+  ctx.font=
+    '33px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+
+  drawWrappedText(
+    ctx,
+    currentCard.clue,
+    innerX+34,
+    clueBoxY+132,
+    innerW-68,
+    56
+  );
+
+
+  /* =====================
+     卡底
+  ===================== */
+
+  ctx.fillStyle=
+    "#777169";
+
+  ctx.font=
+    '24px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+  ctx.fillText(
+    "卡片會重複，生活不會。",
+    innerX,
+    cardY+cardH-105
+  );
+
+
+  ctx.fillStyle=
+    theme.accent;
+
+  ctx.font=
+    '600 25px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+  ctx.fillText(
+    "#今天的生活線索",
+    innerX,
+    cardY+cardH-50
+  );
+
+
+  /* 外部品牌 */
+
+  ctx.save();
+
+  ctx.globalAlpha=.55;
+
+  ctx.fillStyle=
+    theme.accent;
+
+  ctx.font=
+    '22px "Microsoft JhengHei","PingFang TC",sans-serif';
+
+  ctx.fillText(
+    "今天的生活線索",
+    120,
+    1815
+  );
+
+  ctx.restore();
+
+
+  return await new Promise(
+    resolve=>{
+
+      canvas.toBlob(
+        resolve,
+        "image/png",
+        1
+      );
+
+    }
+  );
+}
+
+
+/* =====================================================
+   儲存圖片
+===================================================== */
+
+async function saveStoryImage(){
+
+  const blob=
+    await createStoryBlob();
+
+  if(!blob){
+
+    toast(
+      "圖片產生失敗"
+    );
+
+    return;
+  }
+
+
+  const url=
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const link=
+    document.createElement(
+      "a"
+    );
+
+
+  link.href=url;
+
+
+  link.download=
+    currentCard
+      ? `今天的生活線索-${currentCard.title}.png`
+      : "今天的生活線索.png";
+
+
+  document.body
+    .appendChild(
+      link
+    );
+
+
+  link.click();
+
+
+  link.remove();
+
+
+  setTimeout(
+    ()=>{
+
+      URL.revokeObjectURL(
+        url
+      );
+
+    },
+    1500
+  );
+
+
+  toast(
+    "今天的牌已儲存"
+  );
+}
+
+
+/* =====================================================
+   手機判斷
+===================================================== */
+
+function isMobileDevice(){
+
+  return(
+    /Android|iPhone|iPad|iPod/i
+      .test(
+        navigator.userAgent
+      )
+  );
+}
+
+
+/* =====================================================
+   分享圖片
+===================================================== */
+
+async function shareStoryImage(){
+
+  if(
+    !isMobileDevice()
+  ){
+
+    toast(
+      "電腦版請先儲存圖片，再分享到 LINE 或社群"
+    );
+
+    return;
+  }
+
+
+  const blob=
+    await createStoryBlob();
+
+
+  if(!blob){
+
+    toast(
+      "圖片產生失敗"
+    );
+
+    return;
+  }
+
+
+  try{
+
+    const file=
+      new File(
+        [blob],
+        `今天的生活線索-${currentCard.title}.png`,
+        {
+          type:"image/png"
+        }
+      );
+
+
+    if(
+      navigator.share
+      &&
+      navigator.canShare
+      &&
+      navigator.canShare({
+        files:[file]
+      })
+    ){
+
+      await navigator.share({
+
+        files:[file],
+
+        title:
+          "今天的生活線索",
+
+        text:
+          `今天的生活線索｜${currentCard.title}\n#今天的生活線索`
+
+      });
+
+
+      return;
+    }
+
+  }catch(error){
+
+    if(
+      error
+      &&
+      error.name==="AbortError"
+    ){
+
+      return;
+    }
+  }
+
+
+  toast(
+    "這個手機瀏覽器無法直接分享，請先儲存圖片"
+  );
+}
+
+
+/* =====================================================
+   按鈕
+===================================================== */
+
+drawBtn.addEventListener(
+  "click",
+  drawTodayCard
+);
+
+
+saveImageBtn.addEventListener(
+  "click",
+  saveStoryImage
+);
+
+
+shareImageBtn.addEventListener(
+  "click",
+  shareStoryImage
+);
+
+
+copyBtn.addEventListener(
+  "click",
+  copyText
+);
+
+
+changeBtn.addEventListener(
+  "click",
+  changeCard
+);
+
+
+/* =====================================================
+   初始化
+===================================================== */
+
+function init(){
+
+  const saved=
+    getTodayCard();
+
+  drawBtn.textContent=
+    saved
+      ? "看看今天的牌"
+      : "抽一張";
+}
+
+
+document.addEventListener(
+  "DOMContentLoaded",
+  init
+);
+
+</script>
+
+</body>
+</html>
