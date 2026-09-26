@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K828R0D9CH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K828R0D9CH');
+</script>
+
 <meta
   name="viewport"
   content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -710,6 +719,16 @@ h1{
       </button>
 
     </div>
+
+
+    <button
+      id="shareLineBtn"
+      class="secondary"
+      type="button"
+      style="width:100%; margin-top:10px"
+    >
+      LINE 分享
+    </button>
 
 
     <button
@@ -1637,6 +1656,35 @@ function showCard(
    抽今天的牌
 ===================================================== */
 
+// Tracking failures must never interrupt drawing or sharing.
+function trackCardEvent(eventName, card){
+  if(!card){ return; }
+  try{
+    if(typeof window.gtag === "function"){
+      window.gtag("event", eventName, {
+        send_to: "G-K828R0D9CH",
+        card_id: String(card.id),
+        card_title: card.title,
+        card_category: card.category
+      });
+    }
+  }catch{}
+}
+
+// Records opening the LINE share flow, not a completed message delivery.
+function shareLine(){
+  if(!currentCard){ return; }
+  const text = getShareText() + "\n\nhttps://ronwang82-singingbowl.github.io/cards-life-clue/";
+  trackCardEvent("share_line", currentCard);
+  window.open(
+    "https://line.me/R/share?text=" + encodeURIComponent(text),
+    "_blank",
+    "noopener,noreferrer"
+  );
+}
+
+document.getElementById("shareLineBtn").addEventListener("click", shareLine);
+
 function drawTodayCard(){
 
   const saved=
@@ -1667,6 +1715,8 @@ function drawTodayCard(){
     card,
     false
   );
+
+  trackCardEvent("draw_card", card);
 }
 
 
@@ -1700,6 +1750,8 @@ function changeCard(){
     next,
     false
   );
+
+  trackCardEvent("draw_again", next);
 
   toast(
     "已換一條新的生活線索"
