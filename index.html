@@ -551,6 +551,51 @@ h1{
     grid-template-columns:1fr;
   }
 }
+
+/* 輕柔抽牌轉場；系統偏好減少動態時立即顯示結果。 */
+.home.active .deck,
+.home.active h1,
+.home.active .intro,
+.home.active .primary{animation:home-enter .65s ease-out both}
+.home.active .deck{animation-delay:.05s}
+.home.active h1{animation-delay:.18s}
+.home.active .intro{animation-delay:.30s}
+.home.active .primary{animation-delay:.42s}
+@keyframes home-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+/* 首次進入時，三張牌輕輕錯開並回到牌堆。 */
+.home.active .deck-card:nth-child(1){animation:shuffle-left 1.7s .15s ease-in-out both}
+.home.active .deck-card:nth-child(2){animation:shuffle-right 1.7s .15s ease-in-out both}
+.home.active .deck-card:nth-child(3){animation:shuffle-top 1.7s .15s ease-in-out both}
+@keyframes shuffle-left{
+  0%,100%{transform:rotate(-5deg) translate(-8px,5px)}
+  30%{transform:translate(-34px,-9px) rotate(-12deg)}
+  65%{transform:translate(8px,4px) rotate(2deg)}
+}
+@keyframes shuffle-right{
+  0%,100%{transform:rotate(4deg) translate(8px,2px)}
+  30%{transform:translate(32px,-5px) rotate(11deg)}
+  65%{transform:translate(-7px,4px) rotate(-2deg)}
+}
+@keyframes shuffle-top{
+  0%,100%{transform:none}
+  30%{transform:translateY(-12px) rotate(2deg)}
+  65%{transform:translateY(2px) rotate(-2deg)}
+}
+.primary{transition:transform .18s ease,box-shadow .18s ease}
+.primary:active{transform:scale(.985)}
+.home.is-drawing .deck-card:nth-child(3){animation:deck-lift .42s ease-in-out both}
+@keyframes deck-lift{0%{transform:none}55%{transform:translateY(-12px) rotate(-2deg)}100%{transform:translateY(-18px) rotateY(45deg);opacity:.25}}
+.card.animate{animation:card-unfold .7s cubic-bezier(.22,.7,.25,1) both;transform-origin:center}
+@keyframes card-unfold{from{opacity:0;transform:perspective(1200px) rotateY(-13deg) translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.card.is-leaving{animation:card-leave .24s ease-in both}
+@keyframes card-leave{to{opacity:0;transform:translateY(-5px)}}
+.card-screen.revealing > :not(.card){animation:actions-enter .45s .28s ease-out both}
+@keyframes actions-enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .home.active .deck,.home.active h1,.home.active .intro,.home.active .primary,.home.active .deck-card,.home.is-drawing .deck-card:nth-child(3),.card.animate,.card.is-leaving,.card-screen.revealing > :not(.card){animation:none!important}
+  .primary{transition:none}
+}
+
 </style>
 </head>
 
@@ -1649,6 +1694,10 @@ function showCard(
   cardElement
     .classList
     .add("animate");
+
+  cardScreen.classList.remove("revealing");
+  void cardScreen.offsetWidth;
+  cardScreen.classList.add("revealing");
 }
 
 
@@ -2752,9 +2801,41 @@ async function shareStoryImage(){
    按鈕
 ===================================================== */
 
+let transitionInProgress=false;
+const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function startDraw(){
+  if(transitionInProgress) return;
+  if(reducedMotion.matches){ drawTodayCard(); return; }
+  transitionInProgress=true;
+  drawBtn.disabled=true;
+  homeScreen.classList.add("is-drawing");
+  setTimeout(()=>{
+    drawTodayCard();
+    homeScreen.classList.remove("is-drawing");
+    drawBtn.disabled=false;
+    transitionInProgress=false;
+  },420);
+}
+
+function startChange(){
+  if(transitionInProgress) return;
+  if(reducedMotion.matches){ changeCard(); return; }
+  transitionInProgress=true;
+  changeBtn.disabled=true;
+  cardElement.classList.remove("animate");
+  cardElement.classList.add("is-leaving");
+  setTimeout(()=>{
+    cardElement.classList.remove("is-leaving");
+    changeCard();
+    changeBtn.disabled=false;
+    transitionInProgress=false;
+  },240);
+}
+
 drawBtn.addEventListener(
   "click",
-  drawTodayCard
+  startDraw
 );
 
 
@@ -2778,7 +2859,7 @@ copyBtn.addEventListener(
 
 changeBtn.addEventListener(
   "click",
-  changeCard
+  startChange
 );
 
 
