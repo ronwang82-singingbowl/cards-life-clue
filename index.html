@@ -551,6 +551,25 @@ h1{
     grid-template-columns:1fr;
   }
 }
+
+/* 輕柔抽牌轉場；系統偏好減少動態時立即顯示結果。 */
+.home.active{animation:home-enter .55s ease-out both}
+@keyframes home-enter{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.primary{transition:transform .18s ease,box-shadow .18s ease}
+.primary:active{transform:scale(.985)}
+.home.is-drawing .deck-card:nth-child(3){animation:deck-lift .42s ease-in-out both}
+@keyframes deck-lift{0%{transform:none}55%{transform:translateY(-12px) rotate(-2deg)}100%{transform:translateY(-18px) rotateY(45deg);opacity:.25}}
+.card.animate{animation:card-unfold .7s cubic-bezier(.22,.7,.25,1) both;transform-origin:center}
+@keyframes card-unfold{from{opacity:0;transform:perspective(1200px) rotateY(-13deg) translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+.card.is-leaving{animation:card-leave .24s ease-in both}
+@keyframes card-leave{to{opacity:0;transform:translateY(-5px)}}
+.card-screen.revealing > :not(.card){animation:actions-enter .45s .28s ease-out both}
+@keyframes actions-enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .home.active,.home.is-drawing .deck-card:nth-child(3),.card.animate,.card.is-leaving,.card-screen.revealing > :not(.card){animation:none!important}
+  .primary{transition:none}
+}
+
 </style>
 </head>
 
@@ -1649,6 +1668,10 @@ function showCard(
   cardElement
     .classList
     .add("animate");
+
+  cardScreen.classList.remove("revealing");
+  void cardScreen.offsetWidth;
+  cardScreen.classList.add("revealing");
 }
 
 
@@ -2752,9 +2775,41 @@ async function shareStoryImage(){
    按鈕
 ===================================================== */
 
+let transitionInProgress=false;
+const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function startDraw(){
+  if(transitionInProgress) return;
+  if(reducedMotion.matches){ drawTodayCard(); return; }
+  transitionInProgress=true;
+  drawBtn.disabled=true;
+  homeScreen.classList.add("is-drawing");
+  setTimeout(()=>{
+    drawTodayCard();
+    homeScreen.classList.remove("is-drawing");
+    drawBtn.disabled=false;
+    transitionInProgress=false;
+  },420);
+}
+
+function startChange(){
+  if(transitionInProgress) return;
+  if(reducedMotion.matches){ changeCard(); return; }
+  transitionInProgress=true;
+  changeBtn.disabled=true;
+  cardElement.classList.remove("animate");
+  cardElement.classList.add("is-leaving");
+  setTimeout(()=>{
+    cardElement.classList.remove("is-leaving");
+    changeCard();
+    changeBtn.disabled=false;
+    transitionInProgress=false;
+  },240);
+}
+
 drawBtn.addEventListener(
   "click",
-  drawTodayCard
+  startDraw
 );
 
 
@@ -2778,7 +2833,7 @@ copyBtn.addEventListener(
 
 changeBtn.addEventListener(
   "click",
-  changeCard
+  startChange
 );
 
 
